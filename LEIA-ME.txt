@@ -1,0 +1,21 @@
+ZNPvP — SITE DE TESTE
+=====================
+
+COMO ABRIR
+1. Extraia o arquivo ZIP.
+2. Abra index.html no Chrome, Edge ou outro navegador.
+3. Vá ao rodapé e clique em “Área Staff”.
+4. Senha de demonstração: ZNPvPzeunexor20123234
+
+O QUE TESTAR
+- Editar títulos e descrições do site.
+- Alterar nome, preço, descrição e benefícios de três planos.
+- Definir uma URL pública para a imagem principal.
+- Configurar o link de convite do Discord.
+- Exportar e importar a configuração JSON.
+- Ver as mudanças no próprio site.
+
+IMPORTANTE
+Esta é uma demonstração estática para testar o visual e as funções básicas. A senha está no JavaScript do navegador e NÃO protege um site publicado. As alterações ficam no armazenamento local deste navegador, não em um banco de dados. Para publicar com segurança, será necessário criar autenticação no servidor, banco de dados, upload de imagens e permissões administrativas.
+
+O resultado é um protótipo independente inspirado na organização geral de um site de roleplay; não copia os arquivos proprietários do site de referência.
