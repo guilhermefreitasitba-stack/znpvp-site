@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "outputDirectory": "public",
+  "rewrites": [
+    { "source": "/staff", "destination": "/staff.html" }
+  ]
+}

@@ -4,8 +4,14 @@
   "private": true,
   "description": "Site ZNPvP com painel staff e conteúdo persistente",
   "main": "server.js",
-  "scripts": { "start": "node server.js", "dev": "node --watch server.js" },
-  "engines": { "node": ">=20" },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "check": "node --check server.js && node --check public/app.js && node --check public/staff.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "better-sqlite3": "^11.8.1",
@@ -14,6 +20,8 @@
     "express-rate-limit": "^7.5.0",
     "express-session": "^1.18.1",
     "helmet": "^8.0.0",
-    "multer": "^2.0.2"
+    "multer": "^2.0.2",
+    "@upstash/redis": "^1.35.3",
+    "@vercel/blob": "^1.1.1"
   }
 }

@@ -1,47 +1,39 @@
-# ZNPvP — Site e Área Staff
+# ZNPvP — Site completo + Área Staff
 
-Site responsivo inspirado nas referências enviadas, com identidade visual preta/vermelha, logo ZNPvP, seções de sistemas, spoilers, polícia, rankings, preços, reservas, como entrar e rodapé. A Loja foi removida.
+Site responsivo com identidade visual preta/vermelha, logo ZNPvP e seções de sistemas, **Categorias**, spoilers, polícia/corporações, rankings, preços/planos, reservas, como entrar, regras e rodapé. A Loja foi removida. A seção Categorias inclui Facções, Corps, Territórios, Mapa ZNPvP, Recrutamento, Atendimento, Rankings e Eventos.
 
-## Requisitos
-- Node.js 20 ou superior (recomendado Node 22)
-- npm
+## O que foi corrigido nesta versão
+- Categorias agora têm seção própria no site e aparecem no menu.
+- Área Staff em `/staff`, com login no servidor e editor visual para marca, banner, links, categorias, preços/planos e cards.
+- Editor avançado JSON continua disponível para editar todos os textos, imagens e seções.
+- Salvamento persistente via Upstash Redis na Vercel ou SQLite em hospedagem Node com disco persistente.
+- Upload de imagens por Vercel Blob na Vercel; no servidor Node, as imagens ficam na pasta de uploads configurada.
+- Dados antigos são mesclados com os novos campos para evitar que as categorias sumam após uma atualização.
 
-## Rodar no computador
-1. Extraia o ZIP e abra um terminal na pasta `znpvp-site`.
-2. Copie `.env.example` para `.env`. No Windows, você pode usar `copy .env.example .env` no CMD.
-3. Se quiser, altere `STAFF_PASSWORD` no `.env` para sua senha de teste.
-4. Execute `npm install`.
-5. Execute `npm start`.
-6. Abra `http://localhost:3000`. A Área Staff fica em `http://localhost:3000/staff`.
+## Hospedar na Vercel (para o endereço do site)
+A Vercel hospeda o front-end e as APIs. Para salvar alterações de forma persistente, configure os serviços de armazenamento abaixo; não basta só enviar os HTML/CSS/JS.
 
-Senha inicial local de teste: `ZNPvPzeunexor20123234`. Troque antes de publicar.
+1. Envie **todos os arquivos desta pasta** ao repositório GitHub (inclua `api/`, `lib/`, `public/`, `content-default.json`, `package.json` e `vercel.json`). Não envie `.env`.
+2. Na Vercel, importe o repositório e deixe **Root Directory** na pasta onde está o `vercel.json`.
+3. Em Storage/Marketplace da Vercel, crie/conecte um banco **Upstash Redis** e um **Vercel Blob**. Confirme que as variáveis `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` e `BLOB_READ_WRITE_TOKEN` foram adicionadas ao projeto.
+4. Em **Settings → Environment Variables**, crie `STAFF_PASSWORD` com uma senha forte e exclusiva e `SESSION_SECRET` com uma chave aleatória longa (pelo menos 32 caracteres). Nunca use a senha de exemplo.
+5. Faça **Redeploy**. O site abre na URL `.vercel.app` e a Área Staff em `https://SEU-DOMINIO.vercel.app/staff`.
+6. Entre na Área Staff, edite os campos e clique **Salvar alterações**. Para imagens, escolha o arquivo em **Enviar imagens para o site**; o Blob precisa estar conectado.
 
-## O que a Área Staff permite
-- Login validado no servidor, sessão HTTP-only e limite de tentativas.
-- Editar o conteúdo completo, incluindo títulos, textos, planos/preços, links, menus, cards, spoilers, polícia e imagens por URL/caminho.
-- Enviar imagens JPG, PNG, WEBP, GIF ou AVIF até 8 MB. O painel mostra o caminho gerado; use esse caminho no campo `heroImage`, `heroBackground` ou no `image` do card desejado.
-- Salvar o JSON no SQLite no servidor. As mudanças aparecem no site público após salvar/atualizar.
+### Se o armazenamento não estiver configurado
+O site público ainda carrega o conteúdo de demonstração, mas salvar mudanças exige Upstash Redis. O envio de imagens exige Vercel Blob. O painel mostrará uma mensagem explicando qual variável está faltando.
 
-O editor de conteúdo usa JSON. Mantenha aspas, vírgulas, colchetes e chaves válidos. Antes de editar, use **Recarregar salvo** para pegar a versão atual.
+## Rodar localmente ou hospedar num servidor Node (Render, VPS etc.)
+Requisitos: Node.js 20+ e npm.
 
-## Publicar com GitHub + Render (o GitHub sozinho não executa o backend)
-O site precisa de Node.js, sessão e SQLite; GitHub Pages não suporta o backend. Use GitHub para guardar o código e Render para executar o servidor.
+1. Copie `.env.example` para `.env`.
+2. Troque `STAFF_PASSWORD` e `SESSION_SECRET`.
+3. Execute `npm install` e `npm start`.
+4. Abra `http://localhost:3000` e a área staff em `http://localhost:3000/staff`.
 
-1. Crie uma conta no GitHub e um repositório novo, por exemplo `znpvp-site`.
-2. Envie os arquivos da pasta `znpvp-site` para o repositório (incluindo `render.yaml`, `package.json`, `server.js` e `public/`; **não envie o `.env`**).
-3. No Render, escolha **New + → Blueprint** e conecte o repositório. Ele lerá o `render.yaml`. Alternativamente, crie um **Web Service** com Build Command `npm install` e Start Command `npm start`.
-4. Nas variáveis de ambiente do serviço, configure `STAFF_PASSWORD` com uma senha forte e única. O `SESSION_SECRET` deve ser uma chave aleatória longa; o Blueprint pede para gerar uma automaticamente. Nunca use a senha de teste em produção.
-5. O `render.yaml` configura um disco persistente em `/var/data` para manter o banco e as imagens entre deploys. Verifique no painel do Render se o disco está ativo e montado em `/var/data`.
-6. Faça o deploy e abra a URL `.onrender.com` que o Render mostrar. A Área Staff será `/staff`.
+O `render.yaml` mantém a opção de hospedagem no Render com SQLite e disco persistente. Na Vercel, a API serverless usa Upstash Redis/Blob; o SQLite local do servidor Express não é usado para persistência na Vercel.
 
-### Observações de produção
-- GitHub é o repositório do código; Render é quem mantém o site online. O plano gratuito do Render pode suspender serviços inativos e disponibilidade de disco persistente depende do plano atual.
-- Não commite `.env`, o banco SQLite ou imagens privadas. O `.gitignore` já exclui `.env` e `data/`.
-- Para uma senha com hash bcrypt, defina `STAFF_PASSWORD_HASH` e remova `STAFF_PASSWORD` das variáveis de produção. Se ambas existirem, o servidor prioriza o hash.
-- Rankings e status online são placeholders demonstrativos até conectar uma API real da cidade. Preços são exemplos editáveis.
-
-## Arquivos principais
-- `server.js`: servidor, autenticação, API, upload e banco de dados.
-- `public/index.html`, `public/styles.css`, `public/reference-style.css`, `public/app.js`: site público.
-- `public/staff.html`, `public/staff.css`, `public/staff.js`: Área Staff.
-- `render.yaml`: configuração de deploy no Render.
+## Importante
+- Rankings, quantidade de jogadores, status online e preços iniciais são conteúdo de demonstração até você editar/conectar os dados reais da cidade.
+- Os links de Discord/FiveM e o código de conexão devem ser substituídos pelos links reais da ZNPvP no painel Staff.
+- Não publique `.env`, senhas ou tokens no GitHub.

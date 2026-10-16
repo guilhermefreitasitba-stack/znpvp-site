@@ -1,0 +1,13 @@
+ZNPvP SITE — VERSÃO CORRIGIDA V2
+
+O que foi incluído/corrigido:
+- Seção própria CATEGORIAS no site, com Facções, Corps, Territórios, Mapa ZNPvP, Recrutamento, Atendimento, Rankings e Eventos.
+- Link Categorias adicionado ao menu.
+- Área Staff em /staff com login.
+- Editor visual para textos principais, links, logo/banner, categorias, preços/planos e cards de sistemas.
+- Editor JSON avançado para as demais configurações.
+- APIs para Vercel, com salvamento persistente via Upstash Redis e upload de imagens via Vercel Blob.
+- Mantida a opção Node/Render com SQLite.
+- README com instruções de configuração e deploy.
+
+Na Vercel, configure STAFF_PASSWORD, SESSION_SECRET, UPSTASH_REDIS_REST_URL, UPSTASH_REDIS_REST_TOKEN e BLOB_READ_WRITE_TOKEN. Não publique segredos no GitHub.
